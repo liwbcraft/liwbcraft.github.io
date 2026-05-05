@@ -1,1 +1,742 @@
-<h1>Hello, this is Liwb's page.</h1>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Liwb | 后端开发 & 插件创造者</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.2s;
+        }
+
+        /* 跟随系统主题 */
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --accent-dark: #2563eb;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-card: rgba(30, 41, 59, 0.7);
+                --text-primary: #f1f5f9;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+                --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.3);
+                --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.3);
+            }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            backdrop-filter: blur(12px);
+            background: rgba(var(--bg-primary-rgb, 248, 250, 252), 0.7);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* 语言切换按钮 */
+        .lang-switch {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .lang-switch:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+
+        /* 通用区块样式 */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 48px;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 3rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .highlight {
+            color: var(--accent);
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .hero .bio {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 项目卡片网格 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 28px;
+            transition: all 0.25s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+
+        .project-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .project-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 技能标签云 */
+        .skills-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill {
+            background: var(--bg-secondary);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .skill:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        /* 爱好/特色区块 */
+        .interests-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .interest-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
+            border-radius: 60px;
+            padding: 8px 24px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 社交链接 */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 24px;
+            border-radius: 40px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 邮箱地址样式 - 加粗 */
+        .email-address {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero .subtitle {
+                font-size: 1rem;
+            }
+            .nav-links {
+                gap: 16px;
+            }
+            section {
+                padding: 60px 0;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .interest-card {
+                font-size: 0.85rem;
+                padding: 6px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">Liwb</div>
+            <div class="nav-links">
+                <a href="#home" data-i18n="nav_home">主页</a>
+                <a href="#projects" data-i18n="nav_projects">项目</a>
+                <a href="#skills" data-i18n="nav_skills">技术栈</a>
+                <a href="#interests" data-i18n="nav_interests">灵感与爱好</a>
+                <a href="#contact" data-i18n="nav_contact">联系</a>
+                <button class="lang-switch" id="langSwitch">English</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero 区域 · 个人介绍 -->
+        <section id="home" class="hero">
+            <div class="container hero-content">
+                <div class="avatar">
+                    <span>🧑‍💻</span>
+                </div>
+                <h1><span data-i18n="hero_greeting">Hi, 我是</span> <span class="highlight">Liwb</span></h1>
+                <p class="subtitle" data-i18n="hero_subtitle">后端工程师 · 独立创作者 · 插件爱好者</p>
+                <p class="bio" data-i18n="hero_bio">
+                    一名热爱创造、喜欢"乱想"的 Java 程序员。<br>
+                    擅长 Java 生态与 Web 全栈，空闲时折腾 Obsidian 插件、小工具，结合 AI 做一些有趣的事情。<br>
+                    喜欢阅读、笔记、Excel 与 VBA，以及将脑海中的小想法变成现实。
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary" data-i18n="hero_btn_projects">✨ 探索我的作品</a>
+                    <a href="https://github.com/liwbcraft" target="_blank" class="btn btn-outline" data-i18n="hero_btn_github">GitHub</a>
+                    <a href="https://gitee.com/liwbcraft" target="_blank" class="btn btn-outline" data-i18n="hero_btn_gitee">Gitee</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目展示 -->
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title" data-i18n="projects_title">⚙️ 近期项目</h2>
+                <div class="projects-grid">
+                    <!-- Obsidian 插件 -->
+                    <div class="project-card">
+                        <div class="project-icon">📘</div>
+                        <h3>Custom Translate</h3>
+                        <p data-i18n="project_translate_desc">Obsidian 本地翻译插件 + 单词本管理，集成 LibreTranslate，支持多语言切换与自定义词库。正在探索结合 AI 能力优化翻译体验。</p>
+                        <div class="project-tags">
+                            <span class="tag" data-i18n="tag_obsidian">Obsidian 插件</span>
+                            <span class="tag" data-i18n="tag_typescript">TypeScript</span>
+                            <span class="tag" data-i18n="tag_ai">AI 增强</span>
+                            <span class="tag" data-i18n="tag_vocab">单词本</span>
+                        </div>
+                        <a href="https://github.com/liwbcraft/custom-translate" target="_blank" class="project-link" data-i18n="project_github_link">GitHub 仓库 →</a>
+                    </div>
+
+                    <!-- 个人网站/工具集项目 -->
+                    <div class="project-card">
+                        <div class="project-icon">🌐</div>
+                        <h3 data-i18n="project_toolkit_title">个人网站 & 工具集</h3>
+                        <p data-i18n="project_toolkit_desc">基于 Java/Spring Boot 体系探索构建的个人站点或小工具合集。可能会包含一些提升效率的在线功能，形态不限，持续摸索中。</p>
+                        <div class="project-tags">
+                            <span class="tag" data-i18n="tag_java">Java</span>
+                            <span class="tag" data-i18n="tag_spring">Spring Boot</span>
+                            <span class="tag" data-i18n="tag_web">Web 开发</span>
+                        </div>
+                        <a href="#" class="project-link" data-i18n="project_coming_soon">构思中 · 敬请期待 →</a>
+                    </div>
+
+                    <!-- AI 小工具项目 -->
+                    <div class="project-card">
+                        <div class="project-icon">🤖</div>
+                        <h3 data-i18n="project_ai_title">AI 实验与插件</h3>
+                        <p data-i18n="project_ai_desc">将大模型能力融入笔记流或日常小工具的趣味实验。方向不设限，可能做智能摘要、辅助写作或自动化脚本，随兴趣驱动。</p>
+                        <div class="project-tags">
+                            <span class="tag" data-i18n="tag_ai_ml">AI / 大模型</span>
+                            <span class="tag" data-i18n="tag_python">Python/Node</span>
+                            <span class="tag" data-i18n="tag_creative">创意工具</span>
+                        </div>
+                        <a href="#" class="project-link" data-i18n="project_planning">规划中 · 灵感孵化 →</a>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <p class="text-muted" style="color: var(--text-muted);" data-i18n="more_projects_tip">更多项目和代码片段，可浏览我的 GitHub / Gitee 仓库</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术栈 -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title" data-i18n="skills_title">🛠️ 技术栈与日常工具</h2>
+                <div class="skills-cloud">
+                    <span class="skill" data-i18n="skill_java">Java / Spring Boot</span>
+                    <span class="skill" data-i18n="skill_node">Node.js</span>
+                    <span class="skill" data-i18n="skill_vue">Vue 3</span>
+                    <span class="skill" data-i18n="skill_ts">TypeScript</span>
+                    <span class="skill" data-i18n="skill_obsidian">Obsidian 插件开发</span>
+                    <span class="skill" data-i18n="skill_python">Python (AI 脚本)</span>
+                    <span class="skill" data-i18n="skill_excel">📊 Excel / 函数 / VBA</span>
+                    <span class="skill" data-i18n="skill_docker">Docker / Linux</span>
+                    <span class="skill" data-i18n="skill_git">Git & GitHub/Gitee</span>
+                    <span class="skill" data-i18n="skill_markdown">Markdown / 笔记体系</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 爱好 & 灵感 -->
+        <section id="interests">
+            <div class="container">
+                <h2 class="section-title" data-i18n="interests_title">💡 灵感 · 爱好 · 乱想</h2>
+                <div class="interests-grid">
+                    <div class="interest-card" data-i18n="interest_reading">📚 阅读 & 笔记库 (Obsidian)</div>
+                    <div class="interest-card" data-i18n="interest_plugins">🧩 插件/小工具创作</div>
+                    <div class="interest-card" data-i18n="interest_ai">🤖 AI 应用探索</div>
+                    <div class="interest-card" data-i18n="interest_excel">📊 Excel 函数 & VBA</div>
+                    <div class="interest-card" data-i18n="interest_efficiency">🎯 效率与自动化</div>
+                    <div class="interest-card" data-i18n="interest_opensource">🛠️ 开源与分享</div>
+                    <div class="interest-card" data-i18n="interest_ideas">🌱 持续折腾新想法</div>
+                </div>
+                <p style="text-align: center; margin-top: 36px; color: var(--text-muted); font-size: 0.9rem;" data-i18n="interests_motto">
+                    “喜欢把脑袋里的小火花，变成大家能用的工具。”
+                </p>
+            </div>
+        </section>
+
+        <!-- 联系与社交 -->
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title" data-i18n="contact_title">📬 与我互动</h2>
+                <div class="social-links">
+                    <a href="https://github.com/liwbcraft" target="_blank" class="social-link">
+                        <span>🐙</span> <span data-i18n="github">GitHub</span>
+                    </a>
+                    <a href="https://gitee.com/liwbcraft" target="_blank" class="social-link">
+                        <span>🐉</span> <span data-i18n="gitee">Gitee</span>
+                    </a>
+                    <a href="mailto:cnliwb@163.com" class="social-link">
+                        <span>📧</span> <strong class="email-address">cnliwb@163.com</strong>
+                    </a>
+                </div>
+                <div style="text-align: center; margin-top: 24px;">
+                    <p class="text-muted" style="color: var(--text-muted); font-size: 0.85rem;" data-i18n="contact_invite">
+                        对插件有想法？或者想聊聊技术/工具/Excel —— 欢迎通过邮箱交流。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p data-i18n="footer_text">© 2025 Liwb · 保持好奇，持续创作 | 明暗主题跟随系统 · 网页基于 HTML/CSS/JS 轻量构建</p>
+        </div>
+    </footer>
+
+    <!-- 平滑滚动与中英文切换 -->
+    <script>
+        // 完整的中英文对照表
+        const translations = {
+            zh: {
+                nav_home: '主页',
+                nav_projects: '项目',
+                nav_skills: '技术栈',
+                nav_interests: '灵感与爱好',
+                nav_contact: '联系',
+                hero_greeting: 'Hi, 我是',
+                hero_subtitle: '后端工程师 · 独立创作者 · 插件爱好者',
+                hero_bio: '一名热爱创造、喜欢"乱想"的 Java 程序员。<br>擅长 Java 生态与 Web 全栈，空闲时折腾 Obsidian 插件、小工具，结合 AI 做一些有趣的事情。<br>喜欢阅读、笔记、Excel 与 VBA，以及将脑海中的小想法变成现实。',
+                hero_btn_projects: '✨ 探索我的作品',
+                hero_btn_github: 'GitHub',
+                hero_btn_gitee: 'Gitee',
+                projects_title: '⚙️ 近期项目',
+                project_translate_desc: 'Obsidian 本地翻译插件 + 单词本管理，集成 LibreTranslate，支持多语言切换与自定义词库。正在探索结合 AI 能力优化翻译体验。',
+                project_toolkit_title: '个人网站 & 工具集',
+                project_toolkit_desc: '基于 Java/Spring Boot 体系探索构建的个人站点或小工具合集。可能会包含一些提升效率的在线功能，形态不限，持续摸索中。',
+                project_ai_title: 'AI 实验与插件',
+                project_ai_desc: '将大模型能力融入笔记流或日常小工具的趣味实验。方向不设限，可能做智能摘要、辅助写作或自动化脚本，随兴趣驱动。',
+                project_github_link: 'GitHub 仓库 →',
+                project_coming_soon: '构思中 · 敬请期待 →',
+                project_planning: '规划中 · 灵感孵化 →',
+                more_projects_tip: '更多项目和代码片段，可浏览我的 GitHub / Gitee 仓库',
+                skills_title: '🛠️ 技术栈与日常工具',
+                skill_java: 'Java / Spring Boot',
+                skill_node: 'Node.js',
+                skill_vue: 'Vue 3',
+                skill_ts: 'TypeScript',
+                skill_obsidian: 'Obsidian 插件开发',
+                skill_python: 'Python (AI 脚本)',
+                skill_excel: '📊 Excel / 函数 / VBA',
+                skill_docker: 'Docker / Linux',
+                skill_git: 'Git & GitHub/Gitee',
+                skill_markdown: 'Markdown / 笔记体系',
+                interests_title: '💡 灵感 · 爱好 · 乱想',
+                interest_reading: '📚 阅读 & 笔记库 (Obsidian)',
+                interest_plugins: '🧩 插件/小工具创作',
+                interest_ai: '🤖 AI 应用探索',
+                interest_excel: '📊 Excel 函数 & VBA',
+                interest_efficiency: '🎯 效率与自动化',
+                interest_opensource: '🛠️ 开源与分享',
+                interest_ideas: '🌱 持续折腾新想法',
+                interests_motto: '“喜欢把脑袋里的小火花，变成大家能用的工具。”',
+                contact_title: '📬 与我互动',
+                github: 'GitHub',
+                gitee: 'Gitee',
+                contact_invite: '对插件有想法？或者想聊聊技术/工具/Excel —— 欢迎通过邮箱交流。',
+                footer_text: '© 2025 Liwb · 保持好奇，持续创作 | 明暗主题跟随系统 · 网页基于 HTML/CSS/JS 轻量构建',
+                // 项目标签
+                tag_obsidian: 'Obsidian 插件',
+                tag_typescript: 'TypeScript',
+                tag_ai: 'AI 增强',
+                tag_vocab: '单词本',
+                tag_java: 'Java',
+                tag_spring: 'Spring Boot',
+                tag_web: 'Web 开发',
+                tag_ai_ml: 'AI / 大模型',
+                tag_python: 'Python/Node',
+                tag_creative: '创意工具'
+            },
+            en: {
+                nav_home: 'Home',
+                nav_projects: 'Projects',
+                nav_skills: 'Tech Stack',
+                nav_interests: 'Interests',
+                nav_contact: 'Contact',
+                hero_greeting: 'Hi, I am',
+                hero_subtitle: 'Backend Dev · Indie Creator · Plugin Enthusiast',
+                hero_bio: 'A Java programmer who loves creating and "wild thinking".<br>Skilled in Java ecosystem & full-stack web development. In free time, I tinker with Obsidian plugins, small tools, and interesting AI stuff.<br>Love reading, note-taking, Excel & VBA, and turning small ideas into reality.',
+                hero_btn_projects: '✨ Explore My Work',
+                hero_btn_github: 'GitHub',
+                hero_btn_gitee: 'Gitee',
+                projects_title: '⚙️ Recent Projects',
+                project_translate_desc: 'Obsidian local translation plugin with vocabulary manager, integrated LibreTranslate, multi-language switching. Exploring AI integration to enhance translation experience.',
+                project_toolkit_title: 'Personal Site & Tools',
+                project_toolkit_desc: 'Exploring personal website or tool collections built with Java/Spring Boot. Might include online utilities for productivity. Forms are not limited, still under exploration.',
+                project_ai_title: 'AI Experiments & Plugins',
+                project_ai_desc: 'Fun experiments integrating LLM capabilities into note-taking flows or daily gadgets. Direction is open: smart summaries, writing assistance, or automation scripts, driven by interest.',
+                project_github_link: 'GitHub Repo →',
+                project_coming_soon: 'Conceptualizing · Stay tuned →',
+                project_planning: 'Planning · Incubating ideas →',
+                more_projects_tip: 'Browse my GitHub/Gitee for more projects and code snippets.',
+                skills_title: '🛠️ Tech Stack & Daily Tools',
+                skill_java: 'Java / Spring Boot',
+                skill_node: 'Node.js',
+                skill_vue: 'Vue 3',
+                skill_ts: 'TypeScript',
+                skill_obsidian: 'Obsidian Plugin Dev',
+                skill_python: 'Python (AI Scripts)',
+                skill_excel: '📊 Excel / Functions / VBA',
+                skill_docker: 'Docker / Linux',
+                skill_git: 'Git & GitHub/Gitee',
+                skill_markdown: 'Markdown / Note-taking',
+                interests_title: '💡 Inspirations · Hobbies · Ideas',
+                interest_reading: '📚 Reading & Note-taking (Obsidian)',
+                interest_plugins: '🧩 Plugins / Tool Creation',
+                interest_ai: '🤖 AI Exploration',
+                interest_excel: '📊 Excel Functions & VBA',
+                interest_efficiency: '🎯 Efficiency & Automation',
+                interest_opensource: '🛠️ Open Source & Sharing',
+                interest_ideas: '🌱 Constantly Tinkering',
+                interests_motto: '“Turning sparks in my mind into tools that people can use.”',
+                contact_title: '📬 Get in Touch',
+                github: 'GitHub',
+                gitee: 'Gitee',
+                contact_invite: 'Have an idea for a plugin? Or want to chat about tech/tools/Excel? Feel free to reach out via email.',
+                footer_text: '© 2025 Liwb · Stay curious, keep creating | Theme follows system · Lightweight HTML/CSS/JS',
+                // Project tags
+                tag_obsidian: 'Obsidian Plugin',
+                tag_typescript: 'TypeScript',
+                tag_ai: 'AI Enhanced',
+                tag_vocab: 'Vocabulary',
+                tag_java: 'Java',
+                tag_spring: 'Spring Boot',
+                tag_web: 'Web Dev',
+                tag_ai_ml: 'AI / LLM',
+                tag_python: 'Python/Node',
+                tag_creative: 'Creative Tools'
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            // 切换所有带 data-i18n 属性的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+            // 更新按钮文字
+            const switchBtn = document.getElementById('langSwitch');
+            if (switchBtn) {
+                switchBtn.textContent = lang === 'zh' ? 'English' : '中文';
+            }
+            // 更新页面 lang 属性
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        // 绑定语言切换事件
+        document.getElementById('langSwitch').addEventListener('click', () => {
+            const newLang = currentLang === 'zh' ? 'en' : 'zh';
+            switchLanguage(newLang);
+        });
+
+        // 初始化中文
+        switchLanguage('zh');
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
