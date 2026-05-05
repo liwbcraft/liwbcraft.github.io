@@ -566,12 +566,15 @@
 
     <footer>
         <div class="container">
-            <p data-i18n="footer_text">© 2026 Liwb · 保持好奇，持续创作 | 明暗主题跟随系统 · 网页基于 HTML/CSS/JS 轻量构建</p>
+            <p><span data-i18n="footer_copyright">©</span> <span id="current-year"></span> Liwb · <span data-i18n="footer_motto">保持好奇，持续创作</span> | <span data-i18n="footer_theme">明暗主题跟随系统</span> · <span data-i18n="footer_build">网页基于 HTML/CSS/JS 轻量构建</span></p>
         </div>
     </footer>
 
     <!-- 平滑滚动与中英文切换 -->
     <script>
+        // 获取当前年份并自动更新
+        document.getElementById('current-year').innerText = new Date().getFullYear();
+
         // 完整的中英文对照表
         const translations = {
             zh: {
@@ -620,7 +623,11 @@
                 github: 'GitHub',
                 gitee: 'Gitee',
                 contact_invite: '对插件有想法？或者想聊聊技术/工具/Excel —— 欢迎通过邮箱交流。',
-                footer_text: '© 2025 Liwb · 保持好奇，持续创作 | 明暗主题跟随系统 · 网页基于 HTML/CSS/JS 轻量构建',
+                // 页脚翻译
+                footer_copyright: '©',
+                footer_motto: '保持好奇，持续创作',
+                footer_theme: '明暗主题跟随系统',
+                footer_build: '网页基于 HTML/CSS/JS 轻量构建',
                 // 项目标签
                 tag_obsidian: 'Obsidian 插件',
                 tag_typescript: 'TypeScript',
@@ -679,7 +686,11 @@
                 github: 'GitHub',
                 gitee: 'Gitee',
                 contact_invite: 'Have an idea for a plugin? Or want to chat about tech/tools/Excel? Feel free to reach out via email.',
-                footer_text: '© 2025 Liwb · Stay curious, keep creating | Theme follows system · Lightweight HTML/CSS/JS',
+                // 页脚翻译
+                footer_copyright: '©',
+                footer_motto: 'Stay curious, keep creating',
+                footer_theme: 'Theme follows system',
+                footer_build: 'Lightweight HTML/CSS/JS',
                 // Project tags
                 tag_obsidian: 'Obsidian Plugin',
                 tag_typescript: 'TypeScript',
